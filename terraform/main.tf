@@ -4,7 +4,7 @@ provider "aws" {
 
 resource "aws_lambda_function" "reaper_lambda" {
   filename         = "../functions/reaper.zip"
-  function_name    = "FindWorkspacesToReap-${var.TFE_ORG}"
+  function_name    = "FindWorkspacesToReap-${lower(var.TFE_ORG)}"
   role             = "${aws_iam_role.iam_for_lambda.arn}"
   handler          = "reapWorkspaces.findReapableWorkspaces"
   source_code_hash = "${base64sha256(file("../functions/reaper.zip"))}"
@@ -23,7 +23,7 @@ resource "aws_lambda_function" "reaper_lambda" {
 
 resource "aws_lambda_function" "process_lambda" {
   filename         = "../functions/reaper.zip"
-  function_name    = "ProcessReaperQueue-${var.TFE_ORG}"
+  function_name    = "ProcessReaperQueue-${lower(var.TFE_ORG)}"
   role             = "${aws_iam_role.iam_for_lambda.arn}"
   handler          = "reapWorkspaces.processQueue"
   source_code_hash = "${base64sha256(file("../functions/reaper.zip"))}"
@@ -43,7 +43,7 @@ resource "aws_lambda_function" "process_lambda" {
 resource "aws_lambda_function" "reaper_ui" {
   count            = "${var.ui == true ? 1 : 0}"
   filename         = "../functions/reaperui.zip"
-  function_name    = "ReaperUIData-${var.TFE_ORG}"
+  function_name    = "ReaperUIData-${lower(var.TFE_ORG)}"
   role             = "${aws_iam_role.iam_for_lambda_ui.arn}"
   handler          = "results.pullDetails"
   source_code_hash = "${base64sha256(file("../functions/reaperui.zip"))}"
@@ -65,7 +65,7 @@ resource "aws_lambda_event_source_mapping" "event_source_mapping" {
 }
 
 resource "aws_cloudwatch_event_rule" "event_run" {
-  name                = "TFE_WSR-${var.TFE_ORG}"
+  name                = "TFE_WSR-${lower(var.TFE_ORG)}"
   description         = "Check for workspaces to reap"
   schedule_expression = "rate(${var.check_time} minutes)"
 }
