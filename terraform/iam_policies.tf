@@ -1,5 +1,5 @@
 resource "aws_iam_role" "iam_for_lambda" {
-  name = "iam_for_lambda-${var.TFE_ORG}"
+  name = "iam_for_lambda-${lower(var.TFE_ORG)}"
 
   assume_role_policy = <<EOF
 {
@@ -19,7 +19,7 @@ EOF
 }
 
 resource "aws_iam_role_policy" "read_write_policy" {
-  name = "iam_reaper_policy-${var.TFE_ORG}"
+  name = "iam_reaper_policy-${lower(var.TFE_ORG)}"
   role = "${aws_iam_role.iam_for_lambda.id}"
 
   policy = <<EOF
@@ -58,7 +58,7 @@ EOF
 }
 
 resource "aws_iam_role" "iam_for_lambda_ui" {
-  name = "iam_for_lambda_ui-${var.TFE_ORG}"
+  name = "iam_for_lambda_ui-${lower(var.TFE_ORG)}"
 
   assume_role_policy = <<EOF
 {
@@ -78,7 +78,7 @@ EOF
 }
 
 resource "aws_iam_role_policy" "reaperui_policy" {
-  name = "iam_reaperui_policy-${var.TFE_ORG}"
+  name = "iam_reaperui_policy-${lower(var.TFE_ORG)}"
   role = "${aws_iam_role.iam_for_lambda_ui.id}"
 
   policy = <<EOF
