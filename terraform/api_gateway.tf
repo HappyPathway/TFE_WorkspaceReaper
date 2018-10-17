@@ -1,6 +1,6 @@
 resource "aws_api_gateway_rest_api" "reaperui" {
   count       = "${var.ui == true ? 1 : 0}"
-  name        = "WSR-${var.TFE_ORG}"
+  name        = "WSR-${lower(var.TFE_ORG)}"
   description = "Terraform Workspace Reaper"
 }
 
